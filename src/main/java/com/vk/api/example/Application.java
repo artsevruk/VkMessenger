@@ -49,7 +49,7 @@ public class Application {
 
 
         //267912605
-        Application application = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties()));
+        Application application = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties(InitVkApi.PROPERTIES_FILE)));
         application.sendMessage(3, "Hello my friend Artem . .");
 
 

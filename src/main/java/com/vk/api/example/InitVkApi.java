@@ -1,5 +1,7 @@
 package com.vk.api.example;
+
 import com.vk.api.sdk.client.actors.UserActor;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,30 +13,33 @@ import java.util.Properties;
 
 public class InitVkApi {
 
-    private final static String PROPERTIES_FILE = "config.properties";
+    public final static String PROPERTIES_FILE = "config.properties";
 
     /**
      * Инициализируем, авторизируем пользователя
+     *
      * @param properties
      * @return UserActor - авторизованый пользователь, от имени которого будет использоваться API
      */
     public static UserActor initActor(Properties properties) {
         int userId = Integer.parseInt(properties.getProperty("userId"));
+        System.out.println(userId);
         String token = properties.getProperty("token");
-        if (userId == 0 || token == null) throw new RuntimeException("Params are not set");
+        System.out.println(token);
+        if (userId == 0 || token == null) throw new RuntimeException("Parametors are not set");
         return new UserActor(userId, token);
     }
 
     /**
      * Считываем данные из файла "config.properties"
+     *
      * @return Properties
      * @throws FileNotFoundException
      */
-    public static Properties readProperties() throws FileNotFoundException {
-        InputStream inputStream = InitVkApi.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
-        if (inputStream == null){
-            throw new FileNotFoundException("property file '" + PROPERTIES_FILE + "' not found in the classpath");
-        }
+    public static Properties readProperties(String propertiesFile ) throws FileNotFoundException {
+        InputStream inputStream = InitVkApi.class.getClassLoader().getResourceAsStream(propertiesFile);
+        if (inputStream == null)
+            throw new FileNotFoundException("property file '" + propertiesFile + "' not found in the classpath");
 
         try {
             Properties properties = new Properties();
