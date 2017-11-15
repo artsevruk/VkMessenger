@@ -1,7 +1,7 @@
 package com.vk.api.example;
 
-import com.vk.api.sdk.client.actors.UserActor;
 
+import com.vk.api.sdk.client.actors.UserActor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +23,7 @@ public class InitVkApi {
      */
     public static UserActor initActor(Properties properties) {
         int userId = Integer.parseInt(properties.getProperty("userId"));
-        System.out.println(userId);
         String token = properties.getProperty("token");
-        System.out.println(token);
         if (userId == 0 || token == null) throw new RuntimeException("Parametors are not set");
         return new UserActor(userId, token);
     }
