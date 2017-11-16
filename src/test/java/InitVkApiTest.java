@@ -1,16 +1,11 @@
-import com.vk.api.example.Application;
 import com.vk.api.example.InitVkApi;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 import java.io.FileNotFoundException;
 import java.util.Properties;
 
 public class InitVkApiTest {
-
-    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-
 
     @Test
     public void userIdIsNullinitActorInitVkApi() {
@@ -19,7 +14,6 @@ public class InitVkApiTest {
         try {
             Assert.assertNull(InitVkApi.initActor(properties));
         } catch (RuntimeException e) {
-            LOG.info("Parameters are not set");
         }
     }
 
@@ -30,7 +24,6 @@ public class InitVkApiTest {
         try {
             Assert.assertNull(InitVkApi.initActor(properties));
         } catch (RuntimeException e) {
-            LOG.info("Parameters are not set");
         }
     }
 
@@ -42,13 +35,11 @@ public class InitVkApiTest {
         Assert.assertNotNull(InitVkApi.initActor(properties));
     }
 
-
     @Test
     public void readProretiesIsNull() {
         try {
             Assert.assertNull(InitVkApi.readProperties("fake.properties"));
         } catch (FileNotFoundException e) {
-            LOG.info("property file not found in the classpath");
         }
     }
 

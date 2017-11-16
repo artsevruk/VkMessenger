@@ -1,4 +1,5 @@
 package com.vk.api.example;
+
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 
 /**
- *
+ * Класс для работы с сообщениями в VK
  */
 public class Application {
 
@@ -21,7 +22,7 @@ public class Application {
     private UserActor actor;
     private final Random random = new Random();
 
-    public Application(VkApiClient vk, UserActor actor){
+    public Application(VkApiClient vk, UserActor actor) {
         this.vk = vk;
         this.actor = actor;
     }
@@ -32,13 +33,16 @@ public class Application {
      * @param userId      - id пользователя
      * @param textMessage - текст сообщения
      */
-    public void sendMessage(int userId, String textMessage) {
+    public Integer sendMessage(int userId, String textMessage) {
         try {
-            vk.messages().send(actor).message(textMessage).userId(userId).randomId(random.nextInt()).execute();
+            Integer messageId = vk.messages().send(actor).message(textMessage).userId(userId).randomId(random.nextInt()).execute();
+            return messageId;
         } catch (ApiException e) {
             LOG.error("INVALID REQUEST", e);
+            return null;
         } catch (ClientException e) {
             LOG.error("NETWORK ERROR", e);
+            return null;
         }
     }
 
@@ -49,8 +53,8 @@ public class Application {
 
 
         //267912605
-        Application application = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties(InitVkApi.PROPERTIES_FILE)));
-        application.sendMessage(3, "Hello my friend Artem . .");
+        Application message = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties(InitVkApi.PROPERTIES_FILE)));
+        message.sendMessage(267912605, "Hello my friend Artem . .");
 
 
     }

@@ -1,7 +1,7 @@
 package com.vk.api.example;
 
-
 import com.vk.api.sdk.client.actors.UserActor;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +34,7 @@ public class InitVkApi {
      * @return Properties
      * @throws FileNotFoundException
      */
-    public static Properties readProperties(String propertiesFile ) throws FileNotFoundException {
+    public static Properties readProperties(String propertiesFile) throws FileNotFoundException {
         InputStream inputStream = InitVkApi.class.getClassLoader().getResourceAsStream(propertiesFile);
         if (inputStream == null)
             throw new FileNotFoundException("property file '" + propertiesFile + "' not found in the classpath");
