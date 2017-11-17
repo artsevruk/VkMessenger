@@ -51,7 +51,6 @@ public class Application {
         HttpTransportClient client = new HttpTransportClient();
         VkApiClient vk = new VkApiClient(client);
 
-
         //267912605
         Application message = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties(InitVkApi.PROPERTIES_FILE)));
         message.sendMessage(267912605, "Hello my friend Artem . .");
