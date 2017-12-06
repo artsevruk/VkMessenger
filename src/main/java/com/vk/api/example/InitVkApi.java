@@ -1,5 +1,6 @@
 package com.vk.api.example;
 
+import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.client.actors.UserActor;
 
 import java.io.FileNotFoundException;
@@ -16,16 +17,16 @@ public class InitVkApi {
     public final static String PROPERTIES_FILE = "config.properties";
 
     /**
-     * Инициализируем, авторизируем пользователя
+     * Инициализируем, авторизируем сообщество
      *
      * @param properties
      * @return UserActor - авторизованый пользователь, от имени которого будет использоваться API
      */
-    public static UserActor initActor(Properties properties) {
-        int userId = Integer.parseInt(properties.getProperty("userId"));
-        String token = properties.getProperty("token");
-        if (userId == 0 || token == null) throw new RuntimeException("Parametors are not set");
-        return new UserActor(userId, token);
+    public static GroupActor initActor(Properties properties) {
+        int groupId = Integer.parseInt(properties.getProperty("groupId"));
+        String groupToken = properties.getProperty("groupToken");
+        if (groupId == 0 || groupToken == null) throw new RuntimeException("Parametors are not set");
+        return new GroupActor(groupId, groupToken);
     }
 
     /**
