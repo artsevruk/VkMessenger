@@ -15,7 +15,7 @@ import java.util.Random;
 
 
 /**
- * Класс для работы с сообщениями в VK
+ * Класс для рассылки сообщений в VK от имени сообщества
  */
 public class Application {
 
@@ -100,9 +100,10 @@ public class Application {
      * @param textMessage - текст сообщения
      */
     public void sendMessages(String textMessage) {
-        if (members().getItems().size() > 0) {
-            for (int i = 0; i < members().getItems().size(); i++) {
-                sendMessage(members().getItems().get(i), textMessage);
+        ArrayList<Integer> members = (ArrayList<Integer>) members().getItems();
+        if (members.size() > 0) {
+            for (int i = 0; i < members.size(); i++) {
+                sendMessage(members.get(i), textMessage);
                 LOG.info("Message sended - " + i);
                 timeOut(500);
             }
