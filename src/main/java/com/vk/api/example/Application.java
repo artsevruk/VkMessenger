@@ -1,17 +1,22 @@
 package com.vk.api.example;
 
 import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.client.actors.Actor;
+import com.vk.api.sdk.client.actors.GroupActor;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiCaptchaException;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
+import com.vk.api.sdk.objects.groups.responses.GetMembersResponse;
+import com.vk.api.sdk.queries.messages.MessagesSendQuery;
 import com.vk.api.sdk.queries.users.UserField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -22,10 +27,10 @@ public class Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(Application.class);
     private VkApiClient vk;
-    private UserActor actor;
+    private GroupActor actor;
     private final Random random = new Random();
 
-    public Application(VkApiClient vk, UserActor actor) {
+    public Application(VkApiClient vk, GroupActor actor) {
         this.vk = vk;
         this.actor = actor;
     }
@@ -43,66 +48,6 @@ public class Application {
         }
     }
 
-    /**
-     * Печатает информацию о пользователе
-     *
-     * @param userId - id пользователя
-     */
-    public void printUserInfo(String userId) {
-        try {
-            LOG.info("printUserInfo: " + vk.users().get(actor).userIds(userId).fields(UserField.CITY).executeAsString());
-        } catch (ClientException e) {
-        }
-
-    }
-
-    /**
-     * Печатает коды стан
-     */
-    public void printCodesCountries() {
-        try {
-            LOG.info("printCodesCountries: " + vk.database().getCountries(actor).executeAsString());
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Печатает список городов, по заданной стране
-     *
-     * @param codeCountry - код страны
-     */
-    public void printCodesCities(int codeCountry) {
-        try {
-            LOG.info("printCodesCities: " + vk.database().getCities(actor, codeCountry).executeAsString());
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Печатает заданное количество пользователей по заданному городу
-     *
-     * @param idCity       - код города
-     * @param counterUsers - количство пользователей
-     */
-    public void printUsersByCity(int idCity, int counterUsers) {
-        try {
-            LOG.info("printUsersByCity: " + vk.users().search(actor).city(idCity).count(counterUsers).executeAsString());
-        } catch (ClientException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Печатает 10 пользователей из города Солигорска
-     */
-    public void printUsersByCityFromSoligorsk() {
-        int idSoligorsk = 2164;
-        int counterUsers = 10;
-        LOG.info("printUsersByCityFromSoligorsk: ");
-        printUsersByCity(idSoligorsk, counterUsers);
-    }
 
     /**
      * Отправляет сообщение ползователю
@@ -150,39 +95,48 @@ public class Application {
             for (int i = 0; i < usersId.size(); i++) {
                 sendMessage(usersId.get(i), textMessage);
                 LOG.info("Message sended - " + i);
-                timeOut(2000);
+                timeOut(500);
             }
 
         }
     }
 
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, ApiException, ClientException {
         HttpTransportClient client = new HttpTransportClient();
         VkApiClient vk = new VkApiClient(client);
 
         //267912605
-        Application application = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties(InitVkApi.PROPERTIES_FILE)));
-        //message.sendMessage(267912605, "Hello my friend Artem . .");
+        //Application application = new Application(vk, InitVkApi.initActor(InitVkApi.readProperties(InitVkApi.PROPERTIES_FILE)));
+        //application.sendMessage(267912605, "Hello my friend Artem . .");
 
-        ArrayList<Integer> userId = new ArrayList<Integer>();
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
-        userId.add(267912605);
+        ArrayList<Integer> userIds = new ArrayList<Integer>();
+        userIds.add(267912605);
+        userIds.add(454424913);
 
 
-        application.sendMessages(userId, " test sendMessages ");
 
-        application.printCodesCountries();
-        application.printUserInfo("288024722");
-        application.printUsersByCityFromSoligorsk();
+
+        //application.sendMessages(userIds, " test sendMessages ");
+
+        //application.printCodesCountries();
+        //application.printUserInfo("288024722");
+        //application.printUsersByCityFromSoligorsk();
+
+        Random random = new Random();
+        GroupActor group = new GroupActor(158061370, "0a9d87eb106a60d09a376cb55afbb1a25d7859283afea6a39f4558f5e49eda94b8d005e0b0f99a4be7790");
+
+        Application application = new Application(vk, group);
+
+        GetMembersResponse members = application.vk.groups().getMembers(group).groupId("158061370").execute();
+
+        System.out.println("--------3-------"+ members);
+
+
+        //application.sendMessages((ArrayList<Integer>) members.getItems()," 1 Test messages ");
+
+
+
 
     }
 }
